@@ -1,0 +1,43 @@
+body{
+    background: #F7F7FC;
+}
+
+.card_question{
+    background-color: #FFFFFF;
+    border-color: transparent;
+}
+.card_prompt_superior{
+    background-color: #05192D;
+    border-color: transparent;
+}
+.card_prompt_inferior{
+    background-color: #05192D;
+    border-color: transparent;
+}
+.button_previous{
+    border-radius: 20%;
+}
+.button_next{
+    border-radius: 20%;
+}
+.button_center{
+    width: 180px;
+    border-radius: 5%;
+}
+.logo_button{
+    background-color: transparent !important;
+    border-color: transparent;
+    width: 50%;
+}
+.logo_button:hover{
+    background-color: transparent !important;
+    border-color: transparent;
+}
+.img_button{
+    width: 100%;
+    padding: 0%;
+}
+.card_header{
+    background-color: #E1E1E8;
+    border-color: transparent;
+}
