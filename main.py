@@ -1,5 +1,6 @@
 from app import *
 from dash import dcc, html
+import dash_ace
 
 
 app.layout = dbc.Container([
@@ -8,7 +9,7 @@ app.layout = dbc.Container([
     dbc.Row([
         dbc.Col([
             dbc.Button(html.Img(src="assets/logo_asimov_dark.png", className='img_button'),className='logo_button'),
-        ], md= 4),
+        ], md= 4, className='coluna_logo'),
         dbc.Col([
             dbc.Row([
                 dbc.Col([
@@ -21,7 +22,7 @@ app.layout = dbc.Container([
                     html.Button("->", className='button_next')
                 ]),
             ])
-        ], md=4, style={'text-align' : 'center'}),
+        ], md=4, className='coluna_central_header'),
         dbc.Col([
             html.Legend("Daily XP")
         ], md=4, style={'text-align' : 'end'}),
@@ -54,20 +55,19 @@ app.layout = dbc.Container([
         dbc.Col([
             dbc.Row([
                 dbc.Col([
-                    dbc.Card([
-                        dbc.CardBody([
-                            html.Legend("Col2")
-                        ])
-                    ], className='card_prompt_superior')
-                ])
-            ], className='g-2 my-auto'),
-            dbc.Row([
-                dbc.Col([
-                    dbc.Card([
-                        dbc.CardBody([
-                            html.Legend("Col3")
-                        ])
-                    ], className='card_prompt_inferior')
+                    html.Div([
+                        dash_ace.DashAceEditor(
+                        id='input',
+                        value='',
+                        theme='twilight',
+                        mode='python',
+                        tabSize=1,
+                        enableBasicAutocompletion=True,
+                        enableLiveAutocompletion=True,
+                        autocompleter='/autocompleter?prefix=',
+                        placeholder='Python code ...'
+                        )
+                    ])
                 ])
             ], className='g-2 my-auto'),
         ],md=7)
