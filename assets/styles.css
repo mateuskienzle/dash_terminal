@@ -1,5 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
+
+
+p{
+    font-family: 'Roboto', sans-serif;
+    font-size: small;
+    color: #000000;
+}
+H5{
+    font-family: 'Roboto', sans-serif;
+    font-size: large;
+    font-weight: 600;
+}
+H6{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+    display: inline;
+}
+
+
 body{
     background: #F7F7FC;
+}
+
+.coluna_logo{
+    /* background-color: red; */
+    align-self: center;
+}
+.img_button{
+    width: 100%;
+    padding: 0%;
+}
+.logo_button{
+    background-color: transparent !important;
+    border-color: transparent;
+    width: 40%;
+}
+.logo_button:hover{
+    background-color: transparent !important;
+    border-color: transparent;
+}
+.col_navigate_buttons{
+    /* background-color: blue; */
+    align-self: center;
+}
+.col_daily_xp{
+    /* background-color: green; */
+    text-align: end;
+    align-self: center;
 }
 
 .card_question{
@@ -14,39 +61,44 @@ body{
     background-color: #05192D;
     border-color: transparent;
 }
-.button_previous{
+
+.previous_button{
+    /* background-color: purple; */
     border-radius: 20%;
+    border-color: #616D7C;
+    
 }
-.button_next{
+.col_previous_button{
+    /* background-color: red; */
+    text-align: end;
+    padding-right: 0;
+}
+.central_button{
+    /* background-color: purple; */
+    /* border-radius: 5%; */
+    border-color: #616D7C;
+}
+
+.col_central_button{
+    /* background-color: blue; */
+    text-align: center;
+}
+
+.next_button{
+    /* background-color: purple; */
     border-radius: 20%;
+    border-color: #616D7C;
 }
-.button_center{
-    width: 180px;
-    border-radius: 5%;
+.col_next_button{
+    /* background-color: green; */
+    text-align: start;
+    padding-left: 0;
 }
-.logo_button{
-    background-color: transparent !important;
-    border-color: transparent;
-    width: 50%;
-}
-.logo_button:hover{
-    background-color: transparent !important;
-    border-color: transparent;
-}
-.img_button{
-    width: 100%;
-    padding: 0%;
-}
+
 .card_header{
     background-color: #E1E1E8;
     border-color: transparent;
 }
-
-/* .coluna_central_header{
-    text-align: center;
-    padding-top: 5px;
-    background-color: red;
+.col_terminal{
+    max-height: 50%;
 }
-.coluna_logo{
-    background-color: blue;
-} */
