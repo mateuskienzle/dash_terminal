@@ -75,7 +75,7 @@ app.layout = dbc.Container([
                     ])
                 ])
             ], className='g-2 my-auto'),
-        ], md=7, className='col_terminal')
+        ], md=7)
     ], className='g-2 my-auto')
 ], fluid=True)
 

@@ -1,74 +1,53 @@
-import dash
-import dash_ace
-import dash_html_components as html
-from dash.dependencies import Input, Output
-import flask
-from flask import request, jsonify
-from flask_cors import CORS
+import os
+import openai  # pip install openai
+from dash import Dash,dcc, html, Input, Output, State  # pip install dash
 
-server = flask.Flask(__name__)
-CORS(server)
+# Set up OpenAI API credentials
+# Create .env file and insert your api key like so:
+# OPENAI_API_KEY="your-key-goes-here"
+openai.api_key = os.getenv("OPENAI_API_KEY")   # pip install python-dotenv
 
-app = dash.Dash(__name__,
-                server=server,
-                routes_pathname_prefix='/dash/'
-                )
+# Initialize the ChatGPT model
+model_engine = 'text-davinci-003'
 
-syntaxKeywords = {
-    "variable.language": "this|that|super|self|sub|",
-    "support.function": "enumerate|range|pow|sum|abs|max|min|argmax|argmin|len|mean|std|median|all|any|",
-    "support.type": "String|Integer|Bool|Float|Image|UUID|Time|DateTime|Type|",
-    "storage.modifier": "parameter|atomic|primary|optional|id|time|asc|desc|",
-    "constant.language": "true|false|none|na|",
-    "keyword.operator": "and|or|not|except|unless|imply|in|",
-    "keyword.control": "as|from|to|import|export|return|for|exist|with|"
-}
-
-syntaxFolds = "\\:="
-
-ace_editor = dash_ace.DashAceEditor(
-        id='demo-editor',
-        value='test(a: Integer) -> String := \n    return f"value is {a}"',
-        theme='github',
-        mode='norm',
-        tabSize=2,
-        syntaxKeywords=syntaxKeywords,
-        syntaxFolds=syntaxFolds,
-        enableBasicAutocompletion=True,
-        enableLiveAutocompletion=True,
-        autocompleter='/autocompleter?prefix=',
-        prefixLine=True,
-        triggerWords=[':', '\\.', '::'],
-        placeholder='Norm code ...',
-    )
+# Instantiate the Dash app
+app = Dash(__name__)
 
 app.layout = html.Div([
-    html.Button('Compare', id='diff-btn'),
-    ace_editor,
-    html.Div(id='output')
+   html.H1("Dash-ChatGPT Example"),
+   dcc.Input(id='input-text', type='text', placeholder='Type your message here', style={'width':500}),
+   html.Button('Send', id='submit-button', n_clicks=0),
+   dcc.Loading(
+       children=[
+           html.Div(id='output-text')
+       ],
+       type="circle",
+   )
 ])
 
-
+# Define the callback function
 @app.callback(
-    [Output(component_id='demo-editor', component_property='value'),
-     Output(component_id='diff-btn', component_property='children')],
-    [Input('diff-btn', 'n_clicks')]
+  Output('output-text', 'children'),
+  Input('submit-button', 'n_clicks'),
+  State('input-text', 'value')
 )
-def update_output_editor(n_clicks):
-    if n_clicks is None:
-        n_clicks = 0
-    if n_clicks % 2 == 0:
-        return ['test(a: Integer) -> String := \n    return f"value is {a}"',
-                'test(a: Integer) -> String := return f"value is {a}"'], 'Single'
-    else:
-        return 'test(a: Integer) -> String := \n    return f"value is {a}"', 'Compare'
+def update_output(n_clicks, input_text):
+  if n_clicks >0:
+      # Get the response from ChatGPT
+      response = openai.Completion.create(
+          engine=model_engine,
+          prompt=f"{input_text}\n",
+          max_tokens=4000,
+          n=1,
+          stop=None,
+          temperature=0.7,
+      )
 
+      # Extract the generated text from the response
+      generated_text = response.choices[0].text
 
-@server.route('/autocompleter', methods=['GET'])
-def autocompleter():
-    server.logger.info('receiving auto completing request with prefix: ' + request.args.get('prefix'))
-    return jsonify([{"name": "Completed", "value": "Completed", "score": 300, "meta": "test"}])
-
+      # Return the generated text as the output
+      return generated_text
 
 if __name__ == '__main__':
-    app.run_server(port=8051, debug=True)
+  app.run_server(port=8051, debug=True)
