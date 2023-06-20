@@ -1,0 +1,8 @@
+Exercise
+The .sort_values() method
+Let's say you wanted to look at the top 10 theater/movie combinations in your data. Maybe you want to build another theater in your best-performing city, or see if a smash hit movie was generating impressive ticket sales in all of your theater locations. A start to this process might be to sort your data by ticket sales and look at the top few rows.
+That's one place where sort_values() comes in handy. Let's use it to answer the question what are our top 3 movie/theater combinations?
+
+Instructions
+Use the .sort_values() method to sort sales by ticket_quantity, and set the ascending argument in .sort_values() to False so the highest-selling movies are first.
+Display the top 3 best-selling movies using the .head() method.

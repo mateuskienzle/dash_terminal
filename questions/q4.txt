@@ -1,0 +1,9 @@
+Exercise
+Importing packages
+Code packages are an important part of using Python. Code packages give us extra functionality to perform useful tasks in Python like loading data and making graphs.
+The pandas package will help us import our Excel data with it's read_excel() function, but first, we have to import the pandas package.
+Also note: lines of code that start with a hash (#) are called comments. Instructions will be displayed in the comments for your convenience.
+
+Instructions
+Use import to import the pandas package.
+Now import the pandas package as pd.

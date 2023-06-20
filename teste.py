@@ -25,6 +25,18 @@ app.layout = html.Div([
    )
 ])
 
+import plotly.graph_objects as go
+
+fig = go.Figure(
+  data=[go.Bar(x=[1, 2, 3], y=[1, 3, 2])],
+  layout=go.Layout(
+    title=go.layout.Title(text="a figure specified by a graph object")
+  )
+)
+
+   
+fig.show()
+
 # Define the callback function
 @app.callback(
   Output('output-text', 'children'),
