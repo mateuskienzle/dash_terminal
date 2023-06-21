@@ -1,5 +1,5 @@
 from app import *
-from dash import dcc, html, Input, Output, State, callback_context
+from dash import dcc, html, Input, Output, State, callback_context, no_update
 import dash_ace
 
 questao = 1
@@ -15,13 +15,13 @@ app.layout = dbc.Container([
             dbc.Row([
                 dbc.Col([
                     html.Button(html.I(className = "fa fa-arrow-left"), className='previous_button', id='botao_previous')
-                ], md=4, className='col_previous_button'),
+                ], md=4, xs=4, className='col_previous_button'),
                 dbc.Col([
                     html.Button([html.I(className = "fa fa-bars header-icon") , " Course Outline"], className='central_button')
-                ], md=4, className='col_central_button'),
+                ], md=4, xs=4, className='col_central_button'),
                 dbc.Col([
                     html.Button(html.I(className = "fa fa-arrow-right"), className='next_button', id='botao_next')
-                ], md=4, className='col_next_button'),
+                ], md=4, xs=4,className='col_next_button'),
             ])
         ], md=4,className='col_navigate_buttons'),
         dbc.Col([
@@ -42,14 +42,20 @@ app.layout = dbc.Container([
                 ], id='cardInstruction')
             ], className='g-2 my-auto')
         ], md=5),
-        
+
+
         dbc.Col([
+            dbc.Row([
+                dbc.Col([
+                    dbc.Button("RUN", className='run_button', id='testebotao')
+                ], className='col_run_button')
+            ]),
             dbc.Row([
                 dbc.Col([
                     html.Div([
                         dash_ace.DashAceEditor(
                         id='input',
-                        value='',
+                        value='toma do R',
                         theme='twilight',
                         mode='python',
                         tabSize=1,
@@ -57,7 +63,7 @@ app.layout = dbc.Container([
                         enableLiveAutocompletion=True,
                         autocompleter='/autocompleter?prefix=',
                         placeholder='Python code ...',
-                        height='90vh'
+                        height='88vh'
                         )
                     ])
                 ])
@@ -71,9 +77,11 @@ app.layout = dbc.Container([
     Output('cardInstruction', 'children'),
     Input('botao_next', 'n_clicks'),
     Input('botao_previous', 'n_clicks'),
+    Input('testebotao', 'n_clicks'),
+    State('input', 'value')
 )
 
-def changeExercise(n1, n2):
+def changeExercise(n1, n2, n3, toma_do_m):
     global questao
     trigg_id = callback_context.triggered[0]['prop_id'].split('.')[0]
 
@@ -93,7 +101,7 @@ def changeExercise(n1, n2):
                 ], className='card_question')
         
         card_instruction = dbc.Card([
-                            dbc.CardHeader([html.I(className='fa fa-check-circle-o'), html.H6(" Instructions")], className='card_header'),
+                            dbc.CardHeader([html.I(className='fa fa-check-circle-o'), html.H6(" Instructions", id='cardintruction')], className='card_header'),
                             dbc.CardBody([
                                 html.P("Lorem Ipsum Asimov.")
                             ])
@@ -180,6 +188,15 @@ def changeExercise(n1, n2):
                         ], className='card_question')
         
         return card_exercise, card_instruction
+    
+    if trigg_id == 'testebotao':
+
+        with open('readme.txt', 'w') as f:
+            f.write(toma_do_m)
+
+        return no_update
+    
+
 
 if __name__ == "__main__":
     app.run_server(port=8050, debug=True)
