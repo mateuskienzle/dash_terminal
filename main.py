@@ -2,7 +2,7 @@ from app import *
 from dash import dcc, html, Input, Output, State, callback_context, no_update
 import dash_ace
 
-questao = 1
+questionCounter = 1
 
 app.layout = dbc.Container([
 
@@ -14,13 +14,13 @@ app.layout = dbc.Container([
         dbc.Col([
             dbc.Row([
                 dbc.Col([
-                    html.Button(html.I(className = "fa fa-arrow-left"), className='previous_button', id='botao_previous')
+                    html.Button(html.I(className = "fa fa-arrow-left"), className='previous_button', id='previousButton')
                 ], md=4, xs=4, className='col_previous_button'),
                 dbc.Col([
                     html.Button([html.I(className = "fa fa-bars header-icon") , " Course Outline"], className='central_button')
                 ], md=4, xs=4, className='col_central_button'),
                 dbc.Col([
-                    html.Button(html.I(className = "fa fa-arrow-right"), className='next_button', id='botao_next')
+                    html.Button(html.I(className = "fa fa-arrow-right"), className='next_button', id='nextButton')
                 ], md=4, xs=4,className='col_next_button'),
             ])
         ], md=4,className='col_navigate_buttons'),
@@ -47,22 +47,22 @@ app.layout = dbc.Container([
         dbc.Col([
             dbc.Row([
                 dbc.Col([
-                    dbc.Button("RUN", className='run_button', id='testebotao')
+                    dbc.Button("RUN", className='run_button', id='runButton')
                 ], className='col_run_button')
             ]),
             dbc.Row([
                 dbc.Col([
                     html.Div([
                         dash_ace.DashAceEditor(
-                        id='input',
-                        value='toma do R',
+                        id='terminalInput',
+                        value='',
                         theme='twilight',
                         mode='python',
                         tabSize=1,
                         enableBasicAutocompletion=True,
                         enableLiveAutocompletion=True,
                         autocompleter='/autocompleter?prefix=',
-                        placeholder='Python code ...',
+                        placeholder='#Insira seu código aqui',
                         height='88vh'
                         )
                     ])
@@ -75,14 +75,14 @@ app.layout = dbc.Container([
 @app.callback(
     Output('cardExercise', 'children'),
     Output('cardInstruction', 'children'),
-    Input('botao_next', 'n_clicks'),
-    Input('botao_previous', 'n_clicks'),
-    Input('testebotao', 'n_clicks'),
-    State('input', 'value')
+    Input('nextButton', 'n_clicks'),
+    Input('previousButton', 'n_clicks'),
+    Input('runButton', 'n_clicks'),
+    State('terminalInput', 'value')
 )
 
-def changeExercise(n1, n2, n3, toma_do_m):
-    global questao
+def changeExercise(n1, n2, n3, input_terminal):
+    global questionCounter
     trigg_id = callback_context.triggered[0]['prop_id'].split('.')[0]
 
 
@@ -90,58 +90,71 @@ def changeExercise(n1, n2, n3, toma_do_m):
         
         question = open(f"questions/q1.txt").read().split('\n')
 
-        card_exercise =  dbc.Card([
-                    dbc.CardHeader([html.I(className='fa fa-book'), html.H6(" Exercise")], className='card_header'),
-                    dbc.CardBody([
-                        html.H5("ASIMOVZADA"),
-                        html.P("Lorem Ipsum Asimov.\n"),
-                        html.P("Lorem Ipsum Asimov.\n"),
-                        html.P("Lorem Ipsum Asimov.")
-                    ])
-                ], className='card_question')
-        
-        card_instruction = dbc.Card([
-                            dbc.CardHeader([html.I(className='fa fa-check-circle-o'), html.H6(" Instructions", id='cardintruction')], className='card_header'),
-                            dbc.CardBody([
-                                html.P("Lorem Ipsum Asimov.")
-                            ])
-                        ], className='card_question')
-
-        return card_exercise, card_instruction
-
-    if trigg_id == 'botao_next':
-
-        if questao !=5:
-            questao+=1
-        question = open(f"questions/q{questao}.txt").read().split('\n')
-
-        print(questao)
-
         try:
-            splitada = (question[: question.index("")])
-            last_splitada = (question[question.index("") +1:])
+            splited = (question[: question.index("")])
+            last_splited = (question[question.index("") +1:])
         except ValueError:
             []
 
         lista_aux = []
         lista_aux2 = []
 
-        for i in splitada[2:]:
+        for i in splited[2:]:
             lista_aux.append(html.P(i))
         
-        for j in last_splitada[1:]:
+        for j in last_splited[1:]:
             lista_aux2.append(html.P(j))
 
         card_exercise =  dbc.Card([
-                    dbc.CardHeader([html.I(className='fa fa-book'), html.H6([" ", splitada[0]])], className='card_header'),
+                    dbc.CardHeader([html.I(className='fa fa-book'), html.H6([" ", splited[0]])], className='card_header'),
                     dbc.CardBody([
-                        html.H5(splitada[1]),
+                        html.H5(splited[1]),
                         *lista_aux
                     ])
                 ], className='card_question')
         
         card_instruction = dbc.Card([
-                            dbc.CardHeader([html.I(className='fa fa-check-circle-o'), html.H6([" ", last_splitada[0]])], className='card_header'),
+                            dbc.CardHeader([html.I(className='fa fa-check-circle-o'), html.H6([" ", last_splited[0]])], className='card_header'),
+                            dbc.CardBody([
+                                *lista_aux2
+                            ])
+                        ], className='card_question')
+        
+        return card_exercise, card_instruction
+
+    if trigg_id == 'nextButton':
+
+        if questionCounter !=5:
+            questionCounter+=1
+        question = open(f"questions/q{questionCounter}.txt").read().split('\n')
+
+        # print(questionCounter)
+
+        try:
+            splited = (question[: question.index("")])
+            last_splited = (question[question.index("") +1:])
+        except ValueError:
+            []
+
+        lista_aux = []
+        lista_aux2 = []
+
+        for i in splited[2:]:
+            lista_aux.append(html.P(i))
+        
+        for j in last_splited[1:]:
+            lista_aux2.append(html.P(j))
+
+        card_exercise =  dbc.Card([
+                    dbc.CardHeader([html.I(className='fa fa-book'), html.H6([" ", splited[0]])], className='card_header'),
+                    dbc.CardBody([
+                        html.H5(splited[1]),
+                        *lista_aux
+                    ])
+                ], className='card_question')
+        
+        card_instruction = dbc.Card([
+                            dbc.CardHeader([html.I(className='fa fa-check-circle-o'), html.H6([" ", last_splited[0]])], className='card_header'),
                             dbc.CardBody([
                                 *lista_aux2
                             ])
@@ -149,50 +162,50 @@ def changeExercise(n1, n2, n3, toma_do_m):
         
         return card_exercise, card_instruction
     
-    if trigg_id == 'botao_previous':
+    if trigg_id == 'previousButton':
 
-        if questao !=1:
-            questao-=1
-        question = open(f"questions/q{questao}.txt").read().split('\n')
+        if questionCounter !=1:
+            questionCounter-=1
+        question = open(f"questions/q{questionCounter}.txt").read().split('\n')
 
-        print(questao)
+        print(questionCounter)
 
         try:
-            splitada = (question[: question.index("")])
-            last_splitada = (question[question.index("") +1:])
+            splited = (question[: question.index("")])
+            last_splited = (question[question.index("") +1:])
         except ValueError:
             []
 
-        lista_aux = []
-        lista_aux2 = []
+        question_content = []
+        instruction_content = []
 
-        for i in splitada[2:]:
-            lista_aux.append(html.P(i))
+        for i in splited[2:]:
+            question_content.append(html.P(i))
         
-        for j in last_splitada[1:]:
-            lista_aux2.append(html.P(j))
+        for j in last_splited[1:]:
+            instruction_content.append(html.P(j))
 
         card_exercise =  dbc.Card([
-                    dbc.CardHeader([html.I(className='fa fa-book'), html.H6([" ", splitada[0]])], className='card_header'),
+                    dbc.CardHeader([html.I(className='fa fa-book'), html.H6([" ", splited[0]])], className='card_header'),
                     dbc.CardBody([
-                        html.H5(splitada[1]),
-                        *lista_aux
+                        html.H5(splited[1]),
+                        *question_content
                     ])
                 ], className='card_question')
         
         card_instruction = dbc.Card([
-                            dbc.CardHeader([html.I(className='fa fa-check-circle-o'), html.H6([" ", last_splitada[0]])], className='card_header'),
+                            dbc.CardHeader([html.I(className='fa fa-check-circle-o'), html.H6([" ", last_splited[0]])], className='card_header'),
                             dbc.CardBody([
-                                *lista_aux2
+                                *instruction_content
                             ])
                         ], className='card_question')
         
         return card_exercise, card_instruction
     
-    if trigg_id == 'testebotao':
+    if trigg_id == 'runButton':
 
-        with open('readme.txt', 'w') as f:
-            f.write(toma_do_m)
+        with open('terminal_input.txt', 'w') as f:
+            f.write(input_terminal)
 
         return no_update
     
