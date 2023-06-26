@@ -1,8 +1,0 @@
-Exercise
-Looking at data with print()
-Now that we have your movies and theater data loaded into Python, what does this data even look like?
-By using the print() function, we'll be able to look at the ticket sales data in its entirety. Notice how this 'view' of ticket sales data is the number of tickets sold for each movie in each theater location. Each row is an observation of a single movie at a single theater's location.
-
-Instructions
-Use pd.read_excel() to load in ticket_sales.xlsx and assign the result to sales.
-Use the print() function to display the sales data in the console.

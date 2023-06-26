@@ -1,0 +1,3 @@
+{"title": "Números pares",
+"description": "Printe uma lista com os 100 primeiros números pares (lembrando que zero é um número par)\n",
+"instructions": "Create a scatter plot that shows woman_age_marriage on the x-axis and income_woman on the y-axis; each data point should be colored based on the womans level of education, represented by education_woman."}

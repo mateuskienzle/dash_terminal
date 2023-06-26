@@ -1,0 +1,3 @@
+{"title": "Loading data",
+"description": "The pandas package, which you now know how to import as pd, has a useful function, read_excel(), that will load in our Excel data.\n The ticket_sales.xlsx file contains data relating to ticket sales for several (fake and punny) movies at a few different theater locations.\n Maybe they're your theaters. Let's get this data into Python so you can start looking at movie and location performance.",
+"instructions": "Import the pandas package as pd and use the read_excel() function to load the data from ticket_sales.xlsx. \nAssign the data to the variable sales."}

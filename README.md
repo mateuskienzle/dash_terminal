@@ -1,2 +1,2 @@
 # dash_terminal
-That's a terminal using dash library
+Dashboard que será utilizado como terminal para os alunos da plataforma realizerem desafios de código.
